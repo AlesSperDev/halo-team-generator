@@ -23,7 +23,8 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.css"]
+            "styles": ["src/styles.css"],
+            "baseHref": "/halo-team-generator/"
           },
           "configurations": {
             "production": {
@@ -77,6 +78,9 @@
             ],
             "styles": ["src/styles.css"]
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy"
         }
       }
     }
