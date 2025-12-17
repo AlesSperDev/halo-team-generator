@@ -1,0 +1,188 @@
+/* Correzione Globale per evitare overflow orizzontale */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Stili Generali e Contenitore */
+.container {
+  max-width: 1400px;
+  /* Allarga leggermente il contenitore per le 4 colonne */
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f9;
+  border-radius: 10px;
+}
+
+h1 {
+  color: #1a4f8d;
+  /* Blu scuro */
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.description {
+  text-align: center;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+/* Griglia di Input */
+.players-fieldset {
+  border: 1px solid #c9d2db;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  background-color: #ffffff;
+}
+
+.players-fieldset legend {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #1a4f8d;
+  padding: 0 10px;
+}
+
+.input-grid {
+  /* *** CORREZIONE: Passa da 4 a 2 colonne *** */
+  display: grid;
+  grid-template-columns: repeat(2, minmax(450px, 1fr));
+  gap: 20px 40px;
+  /* Aumenta il gap verticale (20px) e orizzontale (40px) */
+}
+
+/* Stili per la singola riga di input (Giocatore + Rank) */
+.player-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* Aumenta lo spazio tra i campi */
+  margin-bottom: 8px;
+  /* Più spazio sotto ogni riga */
+  padding: 8px 0;
+  border-bottom: 1px dotted #e0e0e0;
+}
+
+.player-number {
+  font-weight: bold;
+  color: #1a4f8d;
+  /* Usa un colore più visibile */
+  width: 30px;
+  /* Leggermente più largo per il numero */
+  text-align: right;
+  font-size: 1.1em;
+}
+
+.player-entry input {
+  flex-grow: 1;
+  padding: 10px;
+  /* Aumenta il padding interno dell'input */
+  border: 1px solid #b3c0cf;
+  border-radius: 6px;
+  /* Bordi leggermente più arrotondati */
+  font-size: 1em;
+}
+
+.player-entry .rank-select {
+  width: 150px;
+  /* *** Aumenta la larghezza della dropdown *** */
+  padding: 10px;
+  /* Aumenta il padding interno della dropdown */
+  border: 1px solid #b3c0cf;
+  border-radius: 6px;
+}
+
+/* Contenitore Pulsanti */
+.button-group {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+/* Bottone Genera */
+.generate-button {
+  flex: 1;
+  padding: 18px;
+  font-size: 1.4em;
+  font-weight: bold;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.generate-button:hover {
+  background-color: #1e7e34;
+}
+
+.generate-button.random {
+  background-color: #007bff;
+}
+
+.generate-button.random:hover {
+  background-color: #0056b3;
+}
+
+/* Output Squadre */
+.teams-output {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #e9ecef;
+  border-radius: 8px;
+}
+
+.squadre-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  /* Aumenta il gap tra le squadre */
+  margin-top: 25px;
+}
+
+.team-card {
+  border: 3px solid #1a4f8d;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-height: 200px;
+    /* Aggiunge un'altezza minima per uniformità */
+}
+
+.team-card h3 {
+  color: #1a4f8d;
+  border-bottom: 2px solid #b3c0cf;
+  padding-bottom: 8px;
+  margin-top: 0;
+}
+
+.score {
+  font-size: 1.2em;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  color: #d9534f;
+  /* Rosso per enfatizzare il punteggio */
+}
+
+.team-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.team-card li {
+  padding: 5px 0;
+}
+
+.member-name {
+  font-weight: 600;
+}
+
+.member-score {
+  font-style: italic;
+  font-size: 0.9em;
+  color: #6c757d;
+}

@@ -1,0 +1,66 @@
+<div class="container">
+  <h1>Halo Infinite Team Generator</h1>
+  <p class="description">
+    Inserisci i 16 Gamertag e il loro rank Arena (Bronzo I - Diamante VI). Il
+    sistema assegnerà automaticamente un punteggio di abilità (1-30).
+  </p>
+
+  <fieldset class="players-fieldset">
+    <legend>Dati Giocatori (16 Totali)</legend>
+
+    <div class="input-grid">
+      <div *ngFor="let giocatore of giocatori" class="player-entry">
+        <span class="player-number">{{ giocatore.id }}.</span>
+
+        <input
+          [(ngModel)]="giocatore.nome"
+          [name]="'nome_' + giocatore.id"
+          placeholder="Gamertag"
+        />
+
+        <select
+          [(ngModel)]="giocatore.rank"
+          [name]="'rank_' + giocatore.id"
+          class="rank-select"
+        >
+          <option *ngFor="let rank of rankOptions" [ngValue]="rank">
+            {{ rank.replace("_", " ") }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="button-group">
+    <button class="generate-button" (click)="generaSquadre()">
+      Genera Squadre Bilanciate
+    </button>
+    <button class="generate-button random" (click)="generaSquadreCasuali()">
+      Genera Squadre Casuali
+    </button>
+  </div>
+
+  <hr />
+
+  <div *ngIf="squadre.length > 0" class="teams-output">
+    <h2>🏆 Risultato della generazione delle squadre</h2>
+
+    <div class="squadre-grid">
+      <div *ngFor="let squadra of squadre" class="team-card">
+        <h3>{{ squadra.nome }}</h3>
+        <p class="score">
+          Punteggio Totale:
+          <strong>{{ squadra.punteggioTotale }}</strong>
+        </p>
+
+        <ul>
+          <li *ngFor="let membro of squadra.membri">
+            <span class="member-name">{{ membro.nome }}</span>
+            ({{ membro.rank.replace("_", " ") }})
+            <span class="member-score">({{ membro.score }})</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

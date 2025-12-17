@@ -1,12 +1,15 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+// src/app/app.component.ts
+import { Component } from '@angular/core';
+import { TeamGenerator } from './team-generator/team-generator'; // Importa il tuo componente
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  standalone: true,
+  // Aggiungi TeamGeneratorComponent a 'imports'
+  imports: [TeamGenerator],
+  template: ` <app-team-generator></app-team-generator> `,
+  styles: [''],
 })
-export class App {
-  protected readonly title = signal('halo-team-generator');
+export class AppComponent {
+  title = 'halo-team-generator';
 }
