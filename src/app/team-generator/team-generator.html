@@ -1,28 +1,29 @@
 <div class="container">
   <h1>Halo Infinite Team Generator</h1>
   <p class="description">
-    Inserisci i 16 Gamertag e il loro rank Arena (Bronzo I - Diamante VI). Il
+    Inserisci i Gamertag e il loro rank Arena (Bronzo I - Diamante VI). Il
     sistema assegnerà automaticamente un punteggio di abilità (1-30).
   </p>
 
-  <fieldset class="players-fieldset">
-    <legend>Dati Giocatori (16 Totali)</legend>
+  <div class="config-section">
+    <label for="numParticipants">Numero Partecipanti:</label>
+    <input id="numParticipants" type="number" [(ngModel)]="numeroPartecipanti" (change)="impostaPartecipanti()" min="4"
+      step="4" />
+    <div *ngIf="messaggioErrore" class="error-message">
+      {{ messaggioErrore }}
+    </div>
+  </div>
+
+  <fieldset class="players-fieldset" *ngIf="!messaggioErrore && giocatori.length > 0">
+    <legend>Dati Giocatori ({{ numeroPartecipanti }} Totali)</legend>
 
     <div class="input-grid">
       <div *ngFor="let giocatore of giocatori" class="player-entry">
         <span class="player-number">{{ giocatore.id }}.</span>
 
-        <input
-          [(ngModel)]="giocatore.nome"
-          [name]="'nome_' + giocatore.id"
-          placeholder="Gamertag"
-        />
+        <input [(ngModel)]="giocatore.nome" [name]="'nome_' + giocatore.id" placeholder="Gamertag" />
 
-        <select
-          [(ngModel)]="giocatore.rank"
-          [name]="'rank_' + giocatore.id"
-          class="rank-select"
-        >
+        <select [(ngModel)]="giocatore.rank" [name]="'rank_' + giocatore.id" class="rank-select">
           <option *ngFor="let rank of rankOptions" [ngValue]="rank">
             {{ rank.replace("_", " ") }}
           </option>
@@ -31,7 +32,7 @@
     </div>
   </fieldset>
 
-  <div class="button-group">
+  <div class="button-group" *ngIf="!messaggioErrore && giocatori.length > 0">
     <button class="generate-button" (click)="generaSquadre()">
       Genera Squadre Bilanciate
     </button>

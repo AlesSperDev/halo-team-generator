@@ -89,10 +89,25 @@ export class TeamGenerator implements OnInit {
   giocatori: Giocatore[] = [];
   squadre: Squadra[] = [];
   rankOptions = RANK_OPTIONS;
+  numeroPartecipanti: number = 16;
+  messaggioErrore: string = '';
 
   // Inizializza i 16 giocatori
   ngOnInit() {
-    for (let i = 1; i <= 16; i++) {
+    this.impostaPartecipanti();
+  }
+
+  impostaPartecipanti() {
+    if (this.numeroPartecipanti % 4 !== 0) {
+      this.messaggioErrore = 'Il numero di giocatori deve essere divisibile per 4.';
+      this.giocatori = [];
+      this.squadre = [];
+      return;
+    }
+    this.messaggioErrore = '';
+    this.giocatori = [];
+    this.squadre = [];
+    for (let i = 1; i <= this.numeroPartecipanti; i++) {
       this.giocatori.push({
         id: i,
         nome: `Giocatore ${i}`,
@@ -131,24 +146,22 @@ export class TeamGenerator implements OnInit {
       .filter((g) => g.score > 0)
       .sort((a, b) => b.score - a.score);
 
-    // Verifica che ci siano esattamente 16 giocatori
-    if (giocatoriOrdinati.length !== 16) {
+    // Verifica che ci siano esattamente il numero di giocatori previsto
+    if (giocatoriOrdinati.length !== this.numeroPartecipanti) {
       alert(
-        `Errore: Devi inserire esattamente 16 giocatori con un rank valido. Trovati ${giocatoriOrdinati.length}.`
+        `Errore: Devi inserire esattamente ${this.numeroPartecipanti} giocatori con un rank valido. Trovati ${giocatoriOrdinati.length}.`
       );
       this.squadre = [];
       return;
     }
 
-    this.squadre = [
-      { nome: 'Squadra 1', membri: [], punteggioTotale: 0 },
-      { nome: 'Squadra 2', membri: [], punteggioTotale: 0 },
-      { nome: 'Squadra 3', membri: [], punteggioTotale: 0 },
-      { nome: 'Squadra 4', membri: [], punteggioTotale: 0 },
-    ];
+    const numeroSquadre = this.numeroPartecipanti / 4;
+    this.squadre = [];
+    for (let i = 0; i < numeroSquadre; i++) {
+      this.squadre.push({ nome: `Squadra ${i + 1}`, membri: [], punteggioTotale: 0 });
+    }
 
     // 2. Algoritmo a Serpente (Zig-Zag) per il bilanciamento
-    const numeroSquadre = 4;
 
     for (let i = 0; i < giocatoriOrdinati.length; i++) {
       const giocatore = giocatoriOrdinati[i];
@@ -180,10 +193,10 @@ export class TeamGenerator implements OnInit {
     // Filtra i giocatori con score > 0
     const giocatoriValidi = this.giocatori.filter((g) => g.score > 0);
 
-    // Verifica che ci siano esattamente 16 giocatori
-    if (giocatoriValidi.length !== 16) {
+    // Verifica che ci siano esattamente il numero di giocatori previsto
+    if (giocatoriValidi.length !== this.numeroPartecipanti) {
       alert(
-        `Errore: Devi inserire esattamente 16 giocatori con un rank valido. Trovati ${giocatoriValidi.length}.`
+        `Errore: Devi inserire esattamente ${this.numeroPartecipanti} giocatori con un rank valido. Trovati ${giocatoriValidi.length}.`
       );
       this.squadre = [];
       return;
@@ -199,16 +212,15 @@ export class TeamGenerator implements OnInit {
       ];
     }
 
-    this.squadre = [
-      { nome: 'Squadra 1', membri: [], punteggioTotale: 0 },
-      { nome: 'Squadra 2', membri: [], punteggioTotale: 0 },
-      { nome: 'Squadra 3', membri: [], punteggioTotale: 0 },
-      { nome: 'Squadra 4', membri: [], punteggioTotale: 0 },
-    ];
+    const numeroSquadre = this.numeroPartecipanti / 4;
+    this.squadre = [];
+    for (let i = 0; i < numeroSquadre; i++) {
+      this.squadre.push({ nome: `Squadra ${i + 1}`, membri: [], punteggioTotale: 0 });
+    }
 
-    // 3. Distribuisci i giocatori mescolati tra le 4 squadre (4 giocatori ciascuna)
+    // 3. Distribuisci i giocatori mescolati tra le squadre (4 giocatori ciascuna)
     for (let i = 0; i < giocatoriMescolati.length; i++) {
-      const indiceSquadra = i % 4;
+      const indiceSquadra = i % numeroSquadre;
       const squadra = this.squadre[indiceSquadra];
       squadra.membri.push(giocatoriMescolati[i]);
       squadra.punteggioTotale += giocatoriMescolati[i].score;
