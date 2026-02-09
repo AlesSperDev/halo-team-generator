@@ -1,31 +1,137 @@
 <div class="container">
   <h1>Halo Infinite Team Generator</h1>
   <p class="description">
-    Inserisci i Gamertag e il loro rank Arena (Bronzo I - Diamante VI). Il
-    sistema assegnerà automaticamente un punteggio di abilità (1-30).
+    Seleziona un giocatore dalla lista o inserisci manualmente i Gamertag e il
+    loro rank Arena (Bronze 1 - Diamond 6). Puoi pre-assegnare i giocatori a una
+    squadra. Il sistema completerà le squadre per bilanciarle.
   </p>
 
   <div class="config-section">
     <label for="numParticipants">Numero Partecipanti:</label>
-    <input id="numParticipants" type="number" [(ngModel)]="numeroPartecipanti" (change)="impostaPartecipanti()" min="4"
-      step="4" />
+    <input
+      id="numParticipants"
+      type="number"
+      [(ngModel)]="numeroPartecipanti"
+      (change)="impostaPartecipanti()"
+      min="4"
+      step="4"
+    />
+    <button class="load-button" (click)="caricaGiocatoriPredefiniti()">
+      Carica Lista Predefinita
+    </button>
     <div *ngIf="messaggioErrore" class="error-message">
       {{ messaggioErrore }}
     </div>
   </div>
 
-  <fieldset class="players-fieldset" *ngIf="!messaggioErrore && giocatori.length > 0">
+  <!-- NEW: Player List Management Section -->
+  <details class="management-details">
+    <summary>Gestione Lista Giocatori</summary>
+    <div class="management-panel">
+      <p>
+        Modifica, aggiungi o rimuovi giocatori dalla lista predefinita. Le
+        modifiche verranno salvate nel tuo browser.
+      </p>
+      <div class="management-grid">
+        <div class="header">Gamertag</div>
+        <div class="header">Rank</div>
+        <div class="header">Azione</div>
+
+        <ng-container
+          *ngFor="
+            let player of listaGiocatoriModificabile;
+            let i = index;
+            trackBy: trackByIndex
+          "
+        >
+          <input
+            [(ngModel)]="player.key"
+            [name]="'mng_key_' + i"
+            placeholder="Nuovo Gamertag"
+          />
+          <select [(ngModel)]="player.value" [name]="'mng_val_' + i">
+            <option
+              *ngFor="let rank of rankOptions"
+              [ngValue]="rank.replace('_', ' ')"
+            >
+              {{ rank.replace("_", " ") }}
+            </option>
+          </select>
+          <button class="delete-button" (click)="rimuoviGiocatore(i)">
+            Rimuovi
+          </button>
+        </ng-container>
+      </div>
+      <div class="management-actions">
+        <button (click)="aggiungiGiocatore()">Aggiungi Giocatore</button>
+        <button class="primary" (click)="salvaGiocatoriSuStorage()">
+          Salva Modifiche
+        </button>
+        <button class="danger" (click)="resettaListaGiocatori()">
+          Resetta Lista Predefinita
+        </button>
+      </div>
+    </div>
+  </details>
+
+  <fieldset
+    class="players-fieldset"
+    *ngIf="!messaggioErrore && giocatori.length > 0"
+  >
     <legend>Dati Giocatori ({{ numeroPartecipanti }} Totali)</legend>
 
     <div class="input-grid">
       <div *ngFor="let giocatore of giocatori" class="player-entry">
         <span class="player-number">{{ giocatore.id }}.</span>
 
-        <input [(ngModel)]="giocatore.nome" [name]="'nome_' + giocatore.id" placeholder="Gamertag" />
+        <!-- FIX: Use template reference variable #playerSelect instead of $any() -->
+        <select
+          #playerSelect
+          (change)="onPlayerSelect(giocatore, playerSelect.value)"
+          class="predefined-player-select"
+        >
+          <option value="">-- Seleziona Giocatore --</option>
+          <ng-container *ngFor="let nome of giocatoriPredefiniti">
+            <option
+              *ngIf="
+                !giocatoriPredefinitiSelezionati.has(nome) ||
+                giocatore.nome === nome
+              "
+              [value]="nome"
+            >
+              {{ nome }}
+            </option>
+          </ng-container>
+        </select>
 
-        <select [(ngModel)]="giocatore.rank" [name]="'rank_' + giocatore.id" class="rank-select">
+        <input
+          [(ngModel)]="giocatore.nome"
+          [name]="'nome_' + giocatore.id"
+          placeholder="Gamertag"
+        />
+
+        <select
+          [(ngModel)]="giocatore.rank"
+          [name]="'rank_' + giocatore.id"
+          class="rank-select"
+        >
           <option *ngFor="let rank of rankOptions" [ngValue]="rank">
             {{ rank.replace("_", " ") }}
+          </option>
+        </select>
+
+        <select
+          [(ngModel)]="giocatore.team"
+          [name]="'team_' + giocatore.id"
+          class="team-select"
+        >
+          <!-- FIX: Use [ngValue]="null" to ensure consistent binding and resetting -->
+          <option [ngValue]="null">-- Assegna Squadra --</option>
+          <option
+            *ngFor="let nome of nomiSquadre.slice(0, numeroPartecipanti / 4)"
+            [ngValue]="nome"
+          >
+            Squadra {{ nome }}
           </option>
         </select>
       </div>
@@ -38,6 +144,9 @@
     </button>
     <button class="generate-button random" (click)="generaSquadreCasuali()">
       Genera Squadre Casuali
+    </button>
+    <button class="generate-button reset" (click)="resetAssegnazioniSquadre()">
+      Resetta Assegnazioni
     </button>
   </div>
 

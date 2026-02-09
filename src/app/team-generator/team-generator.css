@@ -11,7 +11,7 @@
   /* Allarga leggermente il contenitore per le 4 colonne */
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f4f6f9;
   border-radius: 10px;
 }
@@ -55,10 +55,117 @@ h1 {
   text-align: center;
 }
 
+.config-section .load-button {
+  padding: 8px 12px;
+  font-size: 1em;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 15px;
+  vertical-align: middle;
+}
+
+.config-section .load-button:hover {
+  background-color: #0056b3;
+}
+
 .error-message {
   color: #d9534f;
   font-weight: bold;
   margin-top: 10px;
+}
+
+/* NEW: Player List Management Section */
+.management-details {
+  border: 1px solid #c9d2db;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  background-color: #ffffff;
+}
+
+.management-details summary {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #1a4f8d;
+  padding: 15px 20px;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+.management-details[open] summary {
+  border-bottom: 1px solid #c9d2db;
+}
+
+.management-details summary::-webkit-details-marker {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.management-panel {
+  padding: 20px;
+}
+
+.management-panel p {
+  margin-top: 0;
+  color: #555;
+}
+
+.management-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr auto;
+  gap: 10px;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.management-grid .header {
+  font-weight: bold;
+  color: #333;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.management-grid input,
+.management-grid select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #b3c0cf;
+}
+
+.management-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.management-actions button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.management-actions button.primary {
+  background-color: #28a745;
+  color: white;
+}
+.management-actions button.danger {
+  background-color: #d9534f;
+  color: white;
+}
+.delete-button {
+  background-color: #f0ad4e;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 /* Griglia di Input */
@@ -78,9 +185,8 @@ h1 {
 }
 
 .input-grid {
-  /* *** CORREZIONE: Passa da 4 a 2 colonne *** */
   display: grid;
-  grid-template-columns: repeat(2, minmax(450px, 1fr));
+  grid-template-columns: repeat(1, 1fr); /* Una colonna per più spazio */
   gap: 20px 40px;
   /* Aumenta il gap verticale (20px) e orizzontale (40px) */
 }
@@ -89,7 +195,7 @@ h1 {
 .player-entry {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   /* Aumenta lo spazio tra i campi */
   margin-bottom: 8px;
   /* Più spazio sotto ogni riga */
@@ -126,6 +232,19 @@ h1 {
   border-radius: 6px;
 }
 
+.player-entry .predefined-player-select,
+.player-entry .team-select {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #b3c0cf;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+}
+
+.player-entry .predefined-player-select {
+  flex-shrink: 0;
+}
+
 /* Contenitore Pulsanti */
 .button-group {
   display: flex;
@@ -157,6 +276,14 @@ h1 {
 
 .generate-button.random:hover {
   background-color: #0056b3;
+}
+
+.generate-button.reset {
+  background-color: #6c757d;
+}
+
+.generate-button.reset:hover {
+  background-color: #5a6268;
 }
 
 /* Output Squadre */
